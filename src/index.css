@@ -1,1 +1,109 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-red: #ef4444;
+    --accent-purple: #8b5cf6;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #475569 #1e293b;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(71, 85, 105, 0.5);
+    border-radius: 12px;
+  }
+
+  .phase-card {
+    transition: all 0.3s ease;
+  }
+
+  .phase-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+  }
+
+  .progress-bar-fill {
+    transition: width 0.8s ease-in-out;
+  }
+
+  .nav-item {
+    transition: all 0.2s ease;
+  }
+
+  .nav-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-left-color: #3b82f6;
+  }
+
+  .nav-item.active {
+    background: rgba(59, 130, 246, 0.15);
+    border-left-color: #3b82f6;
+  }
+
+  .todo-checkbox {
+    transition: all 0.2s ease;
+  }
+
+  .todo-checkbox:checked {
+    background-color: #10b981;
+    border-color: #10b981;
+  }
+
+  .income-bar {
+    transition: all 0.5s ease;
+  }
+
+  .income-bar:hover {
+    filter: brightness(1.2);
+  }
+
+  .section-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pulse-dot {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .timeline-line {
+    background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #10b981);
+  }
+}
