@@ -3,10 +3,10 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import {
   phases, incomeTimeline, baselineExpenses, hourBudgets,
   knowledgeSpine, toolStack, targetEmployers, preApplicationChecklists,
-  phase0MonthlyPlan, adjacentDomains, eliminatedItems, visaStrategy, dailyTodos
+  phase0MonthlyPlan, adjacentDomains, visaStrategy, dailyTodos
 } from './data/planData';
 
-type Section = 'dashboard' | 'timeline' | 'income' | 'todos' | 'checklists' | 'resources' | 'hours' | 'employers' | 'adjacent' | 'visa' | 'eliminated' | 'phase0' | 'restoration';
+type Section = 'dashboard' | 'timeline' | 'income' | 'todos' | 'checklists' | 'resources' | 'hours' | 'employers' | 'adjacent' | 'visa' | 'phase0';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('dashboard');
@@ -52,8 +52,6 @@ export default function App() {
     { id: 'resources', label: 'Knowledge & Tools', icon: '📚' },
     { id: 'adjacent', label: 'Adjacent Domains', icon: '🔄' },
     { id: 'visa', label: 'Visa & Mobility', icon: '🌍' },
-    { id: 'eliminated', label: 'Eliminated Paths', icon: '🚫' },
-    { id: 'restoration', label: 'Restoration Prompts', icon: '💾' },
   ];
 
   return (
@@ -115,8 +113,6 @@ export default function App() {
           {activeSection === 'resources' && <ResourcesSection />}
           {activeSection === 'adjacent' && <AdjacentSection />}
           {activeSection === 'visa' && <VisaSection />}
-          {activeSection === 'eliminated' && <EliminatedSection />}
-          {activeSection === 'restoration' && <RestorationSection />}
         </div>
       </main>
     </div>
@@ -885,99 +881,6 @@ function VisaSection() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// ============ ELIMINATED ============
-function EliminatedSection() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-white">Permanently Eliminated</h2>
-        <p className="text-slate-400 mt-1">These paths don't trace to the stated goal and are explicitly removed.</p>
-      </div>
-
-      <div className="space-y-3">
-        {eliminatedItems.map((item, i) => (
-          <div key={i} className="glass-card p-4 flex items-start gap-3">
-            <span className="text-red-400 text-lg">✕</span>
-            <div>
-              <p className="text-white text-sm font-medium">{item.item}</p>
-              <p className="text-slate-400 text-xs mt-1">{item.reason}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ============ RESTORATION ============
-function RestorationSection() {
-  const [copied, setCopied] = useState<string | null>(null);
-
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(id);
-    setTimeout(() => setCopied(null), 2000);
-  };
-
-  const prompt0 = `I am in PHASE 0 (pre-service sprint) of PROJECT SPINE v3. Targeting BOTH retail/corporate banks AND investment banks AND mid-tier firms AND Big 4 in parallel. Plan: Phase 0 prep (flexible, ~6mo estimate, 20hrs/wk) -> Phase 1 Egyptian military service (~12-15mo, maintenance-mode only) -> Phase 2 bank/IB employment (Years 1-2, 20hr/wk study alongside full-time job) -> Phase 3 elite lateral into Big4/elite IB/MNC -> Years 5-15 Manager -> Controller -> CFO.
-
-HOUR BUDGET PHASE 0: 20hrs/wk -- ACCA 9, Knowledge Spine 3, English 3, Tools 2, Applications 2, Mock interviews 2.
-
-RULE: any real interview or deadline always overrides the study schedule.
-
-CURRENT POSITION: [INSERT MONTH/WEEK/PAPER STATUS/APPLICATION STATUS]`;
-
-  const promptMain = `I am a commerce graduate from South Valley University, Qena, Egypt. GPA 2.8. PROJECT SPINE v3. ONE GOAL: reach CFO/C-suite finance leadership at a multinational.
-
-PHASE STRUCTURE: Phase 0 -> Phase 1 (military, ~12-15mo) -> Phase 2 (bank/IB, Years 1-2) -> Phase 3 (elite lateral, Month 24) -> Years 5-7 Manager -> Years 8-11 Controller -> Years 12-15 CFO.
-
-SPINE: ACCA (Applied Knowledge -> Applied Skills -> Strategic Professional + PER 36mo/9 objectives).
-SECONDARY: CFA (Level I starts Phase 2 Year 2).
-
-CURRENT POSITION: [INSERT PHASE/MONTH/PAPER/APPLICATION STATUS]`;
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-white">Restoration Prompts</h2>
-        <p className="text-slate-400 mt-1">Copy these to restore full context in a new AI session.</p>
-      </div>
-
-      <div className="glass-card p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-white font-medium">Phase 0 / Sprint Restoration</h3>
-          <button
-            onClick={() => copyToClipboard(prompt0, 'p0')}
-            className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded text-xs hover:bg-blue-500/30 transition-colors"
-          >
-            {copied === 'p0' ? '✓ Copied!' : '📋 Copy'}
-          </button>
-        </div>
-        <pre className="text-xs text-slate-300 bg-slate-800 p-3 rounded overflow-x-auto whitespace-pre-wrap">{prompt0}</pre>
-      </div>
-
-      <div className="glass-card p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-white font-medium">Main Program Restoration</h3>
-          <button
-            onClick={() => copyToClipboard(promptMain, 'main')}
-            className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded text-xs hover:bg-blue-500/30 transition-colors"
-          >
-            {copied === 'main' ? '✓ Copied!' : '📋 Copy'}
-          </button>
-        </div>
-        <pre className="text-xs text-slate-300 bg-slate-800 p-3 rounded overflow-x-auto whitespace-pre-wrap">{promptMain}</pre>
-      </div>
-
-      <div className="glass-card p-4 bg-purple-500/5 border-purple-500/30">
-        <p className="text-sm text-purple-300">
-          💡 <strong>Usage:</strong> Fill in the [CURRENT POSITION] field with your exact status before pasting into a new session. This restores full plan context without re-explaining everything.
-        </p>
       </div>
     </div>
   );
